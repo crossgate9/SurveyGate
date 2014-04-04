@@ -84,8 +84,8 @@ describe('survey', function() {
               survey.createQuestion({
                 'content': 'This is first question',
                 'options': [
-                  {'content': 'First Option'},
-                  {'content': 'Second Option'}
+                  { 'content': 'First Option', 'point': 0 },
+                  { 'content': 'Second Option', 'point': 1 }
                 ]
               })
             ]
@@ -95,6 +95,7 @@ describe('survey', function() {
       (question.getAnswer()===null).should.eql(true);
       question.answer(1);
       question.getAnswer().should.eql('Second Option');
+      entity.evaluate().should.eql(1);
     });
   });
 });
