@@ -51,5 +51,50 @@ describe('survey', function() {
         question.getOptions().should.eql([]);
       }
     });
+
+    it('answer the question, index error', function() {
+      var entity = new survey({
+            'questions': [
+              survey.createQuestion({
+                'content': 'This is first question'
+              })
+            ]
+          }),
+          questions = entity.getQuestions(),
+          question = questions[0];
+      (function() { question.answer('abc'); }).should.throw('Answer index error');
+    });
+
+    it('answer the question, index error', function() {
+      var entity = new survey({
+            'questions': [
+              survey.createQuestion({
+                'content': 'This is first question'
+              })
+            ]
+          }),
+          questions = entity.getQuestions(),
+          question = questions[0];
+      (function() { question.answer(1); }).should.throw('Answer index error');
+    });
+
+    it('answer the question, correct', function() {
+      var entity = new survey({
+            'questions': [
+              survey.createQuestion({
+                'content': 'This is first question',
+                'options': [
+                  {'content': 'First Option'},
+                  {'content': 'Second Option'}
+                ]
+              })
+            ]
+          }),
+          questions = entity.getQuestions(),
+          question = questions[0];
+      (question.getAnswer()===null).should.eql(true);
+      question.answer(1);
+      question.getAnswer().should.eql('Second Option');
+    });
   });
 });
