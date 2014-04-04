@@ -14,6 +14,42 @@ describe('survey', function() {
       }).should.throw('Initilization data empty.');
     });
 
-    
+    it('init with displace object', function() {
+      (function() {
+        var entity = new survey({'q': []});
+      }).should.throw('Questions is required.');
+    });
+
+    it('init with questions, not array', function() {
+      (function() {
+        var entity = new survey({'questions': 'abc'});
+      }).should.throw('Questions should be provided as array.');
+    });
+
+    it('init with questions, question type error', function() {
+      (function() {
+        var entity = new survey({'questions': ['abc', 'def']});
+      }).should.throw('Question Type Error');
+    });
+
+    it('init with questions, correctly', function() {
+      var entity = new survey({
+            'questions': [
+              survey.createQuestion({
+                'content': 'This is first question'
+              })
+            ]
+          }),
+          questions = entity.getQuestions();
+
+      entity.getClass().should.eql('survey');
+      questions.length.should.eql(1);
+      for (var key in questions) {
+        var question = questions[key];
+        question.getClass().should.eql('question');
+        question.getContent().should.eql('This is first question');
+        question.getOptions().should.eql([]);
+      }
+    });
   });
 });
